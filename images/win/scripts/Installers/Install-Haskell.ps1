@@ -4,7 +4,7 @@
 ################################################################################
 
 # Get 3 latest versions of GHC, use OData query for that since choco search has issues https://github.com/chocolatey/choco/issues/2271
-$ODataQuery = '$filter=(Title eq ''ghc'') and (IsApproved eq true)&$orderby=Version desc'
+$ODataQuery = '$filter=(Title eq ''ghc'') and (IsApproved eq true) and (IsPrerelease eq false)&$orderby=Version desc'
 $Url = "https://community.chocolatey.org/api/v2/Packages()?$ODataQuery"
 $ChocoVersionsOutput = [Version[]](Invoke-RestMethod -Uri $Url).properties.Version
 $LatestMajorMinor = $ChocoVersionsOutput | Group-Object { $_.ToString(2) } | Sort-Object { [Version]$_.Name } | Select-Object -last 3
